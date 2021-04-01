@@ -1,5 +1,6 @@
 set -g mouse on
 set-window-option -g mode-keys vi
+list-keys -T copy-mode-vi
 
 bind h select-pane -L
 bind j select-pane -D
