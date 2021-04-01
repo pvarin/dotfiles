@@ -1,0 +1,111 @@
+inoremap jk <ESC>
+nnoremap <SPACE> <Nop>
+let mapleader = " "
+syntax on           " highlight syntax
+set number          " show line numbers
+set noswapfile      " disable the swapfile
+set hlsearch        " highlight search results
+nnoremap <leader>/ :let @/ = ""<CR> " clear the search highlighting
+set incsearch       " show search results as you type
+set path+=libs/**,python/**,sim/**,robots/**,scripts/**        " search for files recursively from the cwd
+set laststatus=2    " shows the filename in the status bar
+set tabstop     =4  " Width of tab character
+set softtabstop =4  " Fine tunes the amount of white space to be added
+set shiftwidth  =4  " Determines the amount of whitespace to add in normal mode
+autocmd FileType cfg set noexpandtab
+set expandtab       " When this option is enabled, vi will use spaces instead of tabs
+set wildmenu        " Autocomplete menu
+set mouse=a
+nnoremap <C-k> :m .-2<CR> 
+nnoremap <C-j> :m .+1<CR> 
+
+" Special case the vimrc.symlink to be vim syntax
+augroup symlink_filetypes
+    autocmd BufNewFile,BufRead *vim*.symlink set syntax=vim
+augroup END
+
+ map <Leader>rb :call VimuxRunCommand("clear; rspec " . bufname("%"))<CR>
+" Easily switch tabs with Alt+h and Alt+j
+" These weird characters are determined by testing what is getting set to my
+" terminal when I press the Alt key. See:
+" https://vi.stackexchange.com/questions/2350/how-to-map-alt-key
+execute "set <A-h>=\033h"
+execute "set <A-l>=\033l"
+nnoremap <A-h> gT
+nnoremap <A-l> gt
+
+" Install vim-plug if not already installed
+if empty(glob('~/.vim/autoload/plug.vim'))
+  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+endif
+
+" Specify a directory for plugins
+call plug#begin('~/.vim/plugged')
+" Git support
+Plug 'tpope/vim-fugitive'
+" Dark theme
+Plug 'rafi/awesome-vim-colorschemes'
+" GN syntax highlighting
+Plug 'https://gn.googlesource.com/gn', { 'rtp': 'misc/vim' }
+"Better C++ highlighting
+Plug 'bfrg/vim-cpp-modern'
+" YouCompleteMe
+Plug 'ycm-core/YouCompleteMe'
+" AutoClose parens/braces/etc.
+Plug 'Townk/vim-autoclose'
+" ClangFormat
+Plug 'rhysd/vim-clang-format'
+" File tree
+Plug 'preservim/nerdtree' 
+" Commenting
+Plug 'preservim/nerdcommenter'
+" Nice tmux + vim integration
+Plug 'preservim/vimux'
+" Delete buffers without screwing up the layout (optional dependency of vim-symlink)
+Plug 'moll/vim-bbye' 
+" Symlinks
+Plug 'aymericbeaumet/vim-symlink'
+call plug#end()
+
+colorscheme onedark
+
+" Autoformatting c/cpp files with clang-format
+augroup clang_format
+    autocmd FileType c,cpp setlocal equalprg=$BDI/rt/build/tools/linux/clang-format
+augroup END
+
+" Go to definition with YouCompleteMe
+nnoremap gf :YcmCompleter GoToDefinition<CR>
+nnoremap gl :YcmCompleter GoToDeclaration<CR>
+
+" Clang format options:
+nnoremap <leader>cl :ClangFormat<CR> 
+let g:clang_format#auto_format=1
+
+" NERD Commenter
+" Create default mappings
+let g:NERDCreateDefaultMappings = 1
+
+" add spaces after comment delimiters by default
+let g:nerdspacedelims = 1 "
+
+" Align line-wise comment delimiters flush left instead of following code
+" indentation
+let g:NERDDefaultAlign = 'left'
+
+" Add your own custom formats or override the defaults
+let g:NERDCustomDelimiters = { 'c': { 'left': '/**','right': '*/' } }
+
+
+nnoremap <C-_> :call NERDComment(0,"toggle")<CR>
+vnoremap <C-_> :call NERDComment(0,"toggle")<CR>
+
+function! SourceIfExists(file)
+    if filereadable(expand(a:file))
+        exe 'source' a:file
+    endif
+endfunction
+
+call SourceIfExists("~/.bdi.vim")
