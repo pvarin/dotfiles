@@ -1,0 +1,8 @@
+function vimux () {
+    if [ -z "$1" ]; then
+        tmux -c vim
+    else
+        tmux attach -t $1>/dev/null 2>/dev/null || tmux new-session -s $1 vim
+    fi
+}
+
