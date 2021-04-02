@@ -4,7 +4,7 @@ function! SourceIfExists(file)
     endif
 endfunction
 
-let is_bdi = exists($BDI)
+let is_bdi = !empty($BDI)
 
 """""""""" 'Vanilla' bindings
 inoremap jk <ESC>
@@ -84,8 +84,10 @@ Plug 'moll/vim-bbye'
 " Symlinks
 Plug 'aymericbeaumet/vim-symlink'
 " Customized Plugins
-if $is_bdi
+if is_bdi
     call SourceIfExists('~/dotfiles/vim/bdi_plug.vim')
+else
+    call SourceIfExists('~/dotfiles/vim/personal_plug.vim')
 endif
 call plug#end()
 
@@ -136,6 +138,8 @@ nnoremap <C-f> :NERDTreeFind<CR>
 map <Leader>rb :call VimuxRunCommand("clear; rspec " . bufname("%"))<CR>
 
 """""""""""" Customized Settings
-if $is_bdi
-    call SourceIfExists("~/dotfiles/bdi.vim")
+if is_bdi
+    call SourceIfExists("~/dotfiles/vim/bdi.vim")
+else
+    call SourceIfExists("~/dotfiles/vim/personal.vim")
 endif
