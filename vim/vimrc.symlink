@@ -16,7 +16,7 @@ set noswapfile      " disable the swapfile
 set laststatus=2    " shows the filename in the status bar
 set wildmenu        " Autocomplete menu
 set mouse=a
-
+filetype on
 " Search
 set hlsearch        " highlight search results
 nnoremap <leader>/ :let @/ = ""<CR> " clear the search highlighting
