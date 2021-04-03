@@ -13,7 +13,13 @@ for f in $(find $SCRIPT_DIR -name '*.symlink'); do
     ln -sf $f $LINK_NAME
 done;
 
-# Append the bashrc.append file to bashrc
-if [ -f $SCRIPT_DIR/bashrc.append && $BASHRC_APPEND != yes]; then
-    echo "[[ \$BASHRC_APPEND != yes ]] && export BASHRC_APPEND=yes && source $SCRIPT_DIR/bashrc.append" >> ~/.bashrc
+# Append the bashrc.append file to bashrc and same for zshrc
+if [[ $DID_APPEND != yes ]]; then
+    if [ -f $SCRIPT_DIR/bashrc.append ] && [ -f ~/.bashrc ]; then
+        echo -e "\n[[ \$DID_APPEND != yes ]] && export DID_APPEND=yes && source $SCRIPT_DIR/bashrc.append" >> ~/.bashrc
+    fi
+    if [ -f $SCRIPT_DIR/zshrc.append ] && [ -f ~/.zshrc ]; then
+        echo -e "\n[[ \$DID_APPEND != yes ]] && export DID_APPEND=yes && source $SCRIPT_DIR/zshrc.append" >> ~/.zshrc
+    fi
 fi
+
