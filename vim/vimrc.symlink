@@ -63,6 +63,8 @@ endif
 call plug#begin('~/.vim/plugged')
 " Git support
 Plug 'tpope/vim-fugitive'
+" Surround
+Plug 'tpope/vim-surround'
 " Dark theme
 Plug 'rafi/awesome-vim-colorschemes'
 "Better C++ highlighting
