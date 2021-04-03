@@ -138,9 +138,6 @@ nnoremap <C-n> :NERDTree<CR>
 nnoremap <C-t> :NERDTreeToggle<CR>
 nnoremap <C-f> :NERDTreeFind<CR>
 
-"""""""""""" Vimux
-map <Leader>rb :call VimuxRunCommand("clear; rspec " . bufname("%"))<CR>
-
 """""""""""" Customized Settings
 if is_bdi
     call SourceIfExists("~/dotfiles/vim/bdi.vim")
