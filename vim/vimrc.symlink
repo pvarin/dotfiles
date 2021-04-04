@@ -129,6 +129,7 @@ augroup vimrc_autoformat
 augroup END
 nnoremap <leader>f :Autoformat<CR>
 let g:autoformat_verbosemode=0
+let g:formatdef_buildifier='"buildifier"'
 
 """""""""" YouCompleteMe
 " Go to definition with YouCompleteMe
