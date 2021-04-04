@@ -38,8 +38,11 @@ nnoremap <C-k> :m .-2<CR>
 nnoremap <C-j> :m .+1<CR>
 
 " Special case the vimrc.symlink to be vim syntax
-augroup symlink_filetypes
+augroup dotfile_filetypes
     autocmd BufNewFile,BufRead *vim*.symlink set syntax=vim
+    autocmd BufNewFile,BufRead *tmux*.symlink set syntax=tmux
+    autocmd BufNewFile,BufRead bashrc.append set syntax=bash
+    autocmd BufNewFile,BufRead zshrc.append set syntax=zsh
 augroup END
 
 " Easily switch tabs with Alt+h and Alt+j
@@ -98,18 +101,6 @@ call plug#end()
 """""""""" Color Scheme
 colorscheme onedark
 
-"""""""""" Autoformat
-augroup autoformat
-    autocmd BufWrite * :Autoformat
-    nnoremap <leader>cl :Autoformat<CR>
-    let g:autoformat_verbosemode=0
-augroup END
-
-"""""""""" YouCompleteMe
-" Go to definition with YouCompleteMe
-nnoremap gf :YcmCompleter GoToDefinition<CR>
-nnoremap gl :YcmCompleter GoToDeclaration<CR>
-
 """""""""" NERDCommenter
 " Create default mappings
 let g:NERDCreateDefaultMappings = 1
@@ -131,6 +122,18 @@ let g:NERDTrimTrailingWhitespace = 1
 " characters that are actually sent to the terminal)
 nnoremap <C-_> :call NERDComment(0,"toggle")<CR>
 vnoremap <C-_> :call NERDComment(0,"toggle")<CR>
+
+"""""""""" Autoformat
+augroup vimrc_autoformat
+    autocmd BufWrite * :Autoformat
+augroup END
+nnoremap <leader>cl :Autoformat<CR>
+let g:autoformat_verbosemode=0
+
+"""""""""" YouCompleteMe
+" Go to definition with YouCompleteMe
+nnoremap gf :YcmCompleter GoToDefinition<CR>
+nnoremap gl :YcmCompleter GoToDeclaration<CR>
 
 """""""""""" NERDTree
 nnoremap <leader>n :NERDTreeFocus<CR>
