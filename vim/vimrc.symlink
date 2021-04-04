@@ -127,7 +127,7 @@ vnoremap <C-_> :call NERDComment(0,"toggle")<CR>
 augroup vimrc_autoformat
     autocmd BufWrite * :Autoformat
 augroup END
-nnoremap <leader>cl :Autoformat<CR>
+nnoremap <leader>f :Autoformat<CR>
 let g:autoformat_verbosemode=0
 
 """""""""" YouCompleteMe
