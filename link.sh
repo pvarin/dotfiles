@@ -1,10 +1,15 @@
 #!/bin/bash
 
+if [ -n "$DID_LINK" ]; then
+    return 0
+fi
+export DID_LINK=y
+
 # Get the script directory
 if [[ "$OSTYPE" == "darwin"* ]]; then
-    SCRIPT_DIR=$(dirname "$(greadlink -f "$0")")
+    SCRIPT_DIR=$(dirname "$(greadlink -f "${BASH_SOURCE[0]}")")
 else
-    SCRIPT_DIR=$(dirname "$(readlink -f "$0")")
+    SCRIPT_DIR=$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")
 fi
 
 # Create symlinks for all of the files named *.symlink
@@ -14,12 +19,12 @@ for f in $(find $SCRIPT_DIR -name '*.symlink'); do
 done;
 
 # Append the bashrc.append file to bashrc and same for zshrc
-if [[ $DID_APPEND != yes ]]; then
-    if [ -f $SCRIPT_DIR/bashrc.append ] && [ -f ~/.bashrc ]; then
-        echo -e "\n[[ \$DID_APPEND != yes ]] && export DID_APPEND=yes && source $SCRIPT_DIR/bashrc.append" >> ~/.bashrc
-    fi
-    if [ -f $SCRIPT_DIR/zshrc.append ] && [ -f ~/.zshrc ]; then
-        echo -e "\n[[ \$DID_APPEND != yes ]] && export DID_APPEND=yes && source $SCRIPT_DIR/zshrc.append" >> ~/.zshrc
-    fi
+if [[ $(basename $SHELL) = bash ]]; then
+    [ -f $SCRIPT_DIR/bashrc.append ] && source $SCRIPT_DIR/bashrc.append
+    [ -n "$BDI" ] && [ -f $SCRIPT_DIR/bdi_bashrc.append ] && source $SCRIPT_DIR/bdi_bashrc.append
+fi
+
+if [[ $(basename $SHELL) = zsh ]]; then
+    [ -f $SCRIPT_DIR/zshrc.append ] && source $SCRIPT_DIR/zshrc.append
 fi
 
