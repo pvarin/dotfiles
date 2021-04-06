@@ -1,10 +1,6 @@
 #!/bin/bash
 
-if [ -n "$DID_LINK" ]; then
-    return 0
-fi
-export DID_LINK=y
-
+# All idempotent things go here
 # Get the script directory
 if [[ "$OSTYPE" == "darwin"* ]]; then
     SCRIPT_DIR=$(dirname "$(greadlink -f "${BASH_SOURCE[0]}")")
@@ -27,4 +23,10 @@ fi
 if [[ $(basename $SHELL) = zsh ]]; then
     [ -f $SCRIPT_DIR/zshrc.append ] && source $SCRIPT_DIR/zshrc.append
 fi
+
+# Anything that should only happen once goes down here below this block
+if [ -n "$DID_LINK" ]; then
+    return 0
+fi
+export DID_LINK=y
 
