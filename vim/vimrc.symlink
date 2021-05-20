@@ -12,6 +12,7 @@ nnoremap <SPACE> <Nop>
 let mapleader = " "
 syntax on           " highlight syntax
 set number          " show line numbers
+set relativenumber          " show line numbers
 set noswapfile      " disable the swapfile
 set laststatus=2    " shows the filename in the status bar
 set wildmenu        " Autocomplete menu
@@ -21,12 +22,25 @@ filetype on
 set hlsearch        " highlight search results
 nnoremap <leader>/ :let @/ = ""<CR> " clear the search highlighting
 set incsearch       " show search results as you type
+" Use ripgrep as the default grep program
+set grepprg=rg\ --vimgrep
+set grepformat=%f:%l:%c:%m
+" Splits get added to the right and below the active split
+set splitright
+set splitbelow
+
 
 " Tabbing
 set tabstop     =4  " Width of tab character
 set softtabstop =4  " Fine tunes the amount of white space to be added
 set shiftwidth  =4  " Determines the amount of whitespace to add in normal mode
-autocmd FileType cfg set noexpandtab
+augroup special_cfg
+    autocmd FileType cfg set noexpandtab
+    autocmd FileType cfg let b:autoformat_autoindent=0
+augroup END
+augroup special_gn
+    autocmd FileType gn let b:autoformat_autoindent=0
+augroup END
 set expandtab       " When this option is enabled, vi will use spaces instead of tabs
 
 " Faster scrolling
@@ -64,32 +78,7 @@ endif
 
 " Specify a directory for plugins
 call plug#begin('~/.vim/plugged')
-" Git support
-Plug 'tpope/vim-fugitive'
-" Surround
-Plug 'tpope/vim-surround'
-" Dark theme
-Plug 'rafi/awesome-vim-colorschemes'
-"Better C++ highlighting
-Plug 'bfrg/vim-cpp-modern'
-" YouCompleteMe
-Plug 'ycm-core/YouCompleteMe'
-" AutoClose parens/braces/etc.
-Plug 'Townk/vim-autoclose'
-" ClangFormat
-Plug 'Chiel92/vim-autoformat'
-" File tree
-Plug 'preservim/nerdtree'
-" Commenting
-Plug 'preservim/nerdcommenter'
-" Nice tmux + vim integration
-Plug 'preservim/vimux'
-" Delete buffers without screwing up the layout (optional dependency of vim-symlink)
-Plug 'moll/vim-bbye'
-" Symlinks
-Plug 'aymericbeaumet/vim-symlink'
-" Airline
-Plug 'vim-airline/vim-airline'
+call SourceIfExists("~/dotfiles/vim/plug.vim")
 " Customized Plugins
 if is_bdi
     call SourceIfExists('~/dotfiles/vim/bdi_plug.vim')
@@ -130,6 +119,7 @@ augroup END
 nnoremap <leader>f :Autoformat<CR>
 let g:autoformat_verbosemode=0
 let g:formatdef_buildifier='"buildifier"'
+let g:formatter_yapf_style = 'google'
 
 """""""""" YouCompleteMe
 " Go to definition with YouCompleteMe
@@ -142,6 +132,13 @@ nnoremap <leader>n :NERDTreeFocus<CR>
 nnoremap <C-n> :NERDTree<CR>
 nnoremap <C-t> :NERDTreeToggle<CR>
 nnoremap <C-f> :NERDTreeFind<CR>
+
+"""""""""""" FZF
+nnoremap <C-p> :FZF<CR>
+
+
+"""""""""""" Python-syntax
+let g:python_highlight_all = 1
 
 """""""""""" Customized Settings
 if is_bdi
