@@ -19,10 +19,14 @@ history() {
 PROMPT_COMMAND=_bash_history_sync
 
 function vimux () {
+    TMUX_COMMANDS=(split-window -v \; select-pane -t 0 \; resize-pane -D 10 \;)
+    echo "$TMUX_COMMANDS"
     if [ -z "$1" ]; then
-        tmux new-session vim
+        # tmux new-session vim \; split-window -v \; select-pane -t 0 \;
+        tmux new-session vim \; "${TMUX_COMMANDS[@]}"
     else
-        tmux attach -t $1>/dev/null 2>/dev/null || tmux new-session -s $1 vim
+        tmux attach -t $1>/dev/null 2>/dev/null || \
+            tmux new-session -s $1 vim \; "${TMUX_COMMANDS[@]}"
     fi
 }
 
