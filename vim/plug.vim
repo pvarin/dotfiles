@@ -4,6 +4,7 @@ Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-surround'
 " Dark theme
 Plug 'rafi/awesome-vim-colorschemes'
+Plug 'altercation/vim-colors-solarized'
 "Better C++ highlighting
 Plug 'bfrg/vim-cpp-modern'
 " YouCompleteMe
@@ -32,3 +33,5 @@ Plug 'bazelbuild/vim-bazel'
 Plug 'grailbio/bazel-compilation-database'
 " Python syntax highlighting
 Plug 'vim-python/python-syntax'
+" LaTex
+Plug 'lervag/vimtex'

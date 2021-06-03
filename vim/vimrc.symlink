@@ -10,6 +10,7 @@ let is_bdi = !empty($BDI)
 inoremap jk <ESC>
 nnoremap <SPACE> <Nop>
 let mapleader = " "
+let maplocalleader = " "
 syntax on           " highlight syntax
 set number          " show line numbers
 set relativenumber          " show line numbers
@@ -29,6 +30,9 @@ set grepformat=%f:%l:%c:%m
 set splitright
 set splitbelow
 
+" Spell check
+set spell
+setlocal spell spelllang=en_us
 
 " Tabbing
 set tabstop     =4  " Width of tab character
@@ -88,6 +92,8 @@ endif
 call plug#end()
 
 """""""""" Color Scheme
+" set background=dark
+" colorscheme solarized8
 colorscheme onedark
 
 """""""""" NERDCommenter
@@ -146,3 +152,6 @@ if is_bdi
 else
     call SourceIfExists("~/dotfiles/vim/personal.vim")
 endif
+
+"""""""""""" vimtex Settings
+let g:vimtex_syntax_nospell_comments=1
