@@ -74,6 +74,9 @@ execute "set <A-l>=\033l"
 nnoremap <A-h> gT
 nnoremap <A-l> gt
 
+" Vim Airline options
+let g:airline#extensions#tabline#enabled = 1
+
 """"""""""" Plugins
 " Install vim-plug if not already installed
 if empty(glob('~/.vim/autoload/plug.vim'))

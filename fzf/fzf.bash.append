@@ -1,0 +1,13 @@
+#!/bin/bash
+
+if [ -n "$FZF_APPEND" ]; then
+return 0
+fi
+export FZF_APPEND="y"
+
+if type rg &> /dev/null; then
+export FZF_DEFAULT_COMMAND='rg --files --hidden --follow'
+fi
+
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+bind -x '"\C-p": vim $(fzf);'

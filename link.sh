@@ -24,6 +24,9 @@ if [[ $(basename $SHELL) = zsh ]]; then
     [ -f $SCRIPT_DIR/zshrc.append ] && source $SCRIPT_DIR/zshrc.append
 fi
 
+
+[ -f $SCRIPT_DIR/fzf/fzf.bash.append ] && source $SCRIPT_DIR/fzf/fzf.bash.append
+
 # Anything that should only happen once goes down here below this block
 if [ -n "$DID_LINK" ]; then
     return 0
