@@ -30,9 +30,11 @@ set grepformat=%f:%l:%c:%m
 set splitright
 set splitbelow
 
-" Spell check
-set spell
-setlocal spell spelllang=en_us
+" Spell check in LaTex
+augroup spellcheck_latex
+    autocmd FileType tex set spell
+    autocmd FileType tex setlocal spell spelllang=en_us
+augroup END
 
 " Tabbing
 set tabstop     =4  " Width of tab character
@@ -92,9 +94,10 @@ endif
 call plug#end()
 
 """""""""" Color Scheme
-" set background=dark
-" colorscheme solarized8
+let g:airline_powerline_fonts = 1
+set background=dark
 colorscheme onedark
+unlet g:terminal_ansi_colors
 
 """""""""" NERDCommenter
 " Create default mappings

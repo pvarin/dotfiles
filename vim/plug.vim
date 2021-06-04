@@ -3,8 +3,7 @@ Plug 'tpope/vim-fugitive'
 " Surround
 Plug 'tpope/vim-surround'
 " Dark theme
-Plug 'rafi/awesome-vim-colorschemes'
-Plug 'altercation/vim-colors-solarized'
+Plug 'joshdick/onedark.vim'
 "Better C++ highlighting
 Plug 'bfrg/vim-cpp-modern'
 " YouCompleteMe
@@ -25,6 +24,7 @@ Plug 'moll/vim-bbye'
 Plug 'aymericbeaumet/vim-symlink'
 " Airline
 Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
 " Fuzzy file finder
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 " Bazel support
