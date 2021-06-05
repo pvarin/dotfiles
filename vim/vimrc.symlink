@@ -49,6 +49,12 @@ augroup special_gn
 augroup END
 set expandtab       " When this option is enabled, vi will use spaces instead of tabs
 
+" Move between buffers
+nnoremap <C-h> :bp<CR>
+nnoremap <C-l> :bn<CR>
+nnoremap <C-q> :bd<CR>
+
+
 " Faster scrolling
 nnoremap <C-e> 3<C-e>
 nnoremap <C-y> 3<C-y>

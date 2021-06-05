@@ -1,12 +1,12 @@
 #!/bin/bash
 
 if [ -n "$FZF_APPEND" ]; then
-return 0
+    return 0
 fi
 export FZF_APPEND="y"
 
 if type rg &> /dev/null; then
-export FZF_DEFAULT_COMMAND='rg --files --hidden --follow'
+    export FZF_DEFAULT_COMMAND="rg --files --hidden --follow --no-messages"
 fi
 
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
