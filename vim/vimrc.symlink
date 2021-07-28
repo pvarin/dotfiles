@@ -7,7 +7,7 @@ endfunction
 let is_bdi = !empty($BDI)
 
 """""""""" 'Vanilla' bindings
-inoremap jk <ESC>
+" inoremap jk <ESC>
 nnoremap <SPACE> <Nop>
 let mapleader = " "
 let maplocalleader = " "
