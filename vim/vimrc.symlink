@@ -7,7 +7,6 @@ endfunction
 let is_bdi = !empty($BDI)
 
 """""""""" 'Vanilla' bindings
-let g:netrw_scp_cmd      = "scp -q -T"
 nnoremap <SPACE> <Nop>
 let mapleader = " "
 let maplocalleader = " "
