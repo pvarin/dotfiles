@@ -7,7 +7,7 @@ endfunction
 let is_bdi = !empty($BDI)
 
 """""""""" 'Vanilla' bindings
-inoremap jk <ESC>
+let g:netrw_scp_cmd      = "scp -q -T"
 nnoremap <SPACE> <Nop>
 let mapleader = " "
 let maplocalleader = " "
@@ -43,9 +43,16 @@ set shiftwidth  =4  " Determines the amount of whitespace to add in normal mode
 augroup special_cfg
     autocmd FileType cfg set noexpandtab
     autocmd FileType cfg let b:autoformat_autoindent=0
+    autocmd FileType cfg let g:autoformat_retab = 0
+    autocmd FileType cfg let g:autoformat_remove_trailing_spaces = 0
 augroup END
 augroup special_gn
     autocmd FileType gn let b:autoformat_autoindent=0
+augroup END
+augroup special_conf
+    autocmd FileType conf let b:autoformat_autoindent=0
+    autocmd FileType conf let g:autoformat_retab = 0
+    autocmd FileType conf let g:autoformat_remove_trailing_spaces = 0
 augroup END
 set expandtab       " When this option is enabled, vi will use spaces instead of tabs
 

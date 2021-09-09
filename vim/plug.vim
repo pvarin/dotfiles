@@ -8,6 +8,8 @@ Plug 'joshdick/onedark.vim'
 Plug 'bfrg/vim-cpp-modern'
 " YouCompleteMe
 Plug 'ycm-core/YouCompleteMe'
+" Code completion
+" Plug 'neoclide/coc.nvim'
 " AutoClose parens/braces/etc.
 Plug 'Townk/vim-autoclose'
 " ClangFormat
