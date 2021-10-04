@@ -4,7 +4,7 @@ function! SourceIfExists(file)
     endif
 endfunction
 
-let is_bdi = !empty($BDI)
+let is_work = $USER=="patrick.varin"
 
 """""""""" 'Vanilla' bindings
 " inoremap jk <ESC>
@@ -95,8 +95,8 @@ endif
 call plug#begin('~/.vim/plugged')
 call SourceIfExists("~/dotfiles/vim/plug.vim")
 " Customized Plugins
-if is_bdi
-    call SourceIfExists('~/dotfiles/vim/bdi_plug.vim')
+if is_work
+    call SourceIfExists('~/dotfiles/vim/work_plug.vim')
 else
     call SourceIfExists('~/dotfiles/vim/personal_plug.vim')
 endif
@@ -159,8 +159,8 @@ nnoremap <C-p> :FZF<CR>
 let g:python_highlight_all = 1
 
 """""""""""" Customized Settings
-if is_bdi
-    call SourceIfExists("~/dotfiles/vim/bdi.vim")
+if is_work
+    call SourceIfExists("~/dotfiles/vim/work.vim")
 else
     call SourceIfExists("~/dotfiles/vim/personal.vim")
 endif
