@@ -1,10 +1,6 @@
 #!/bin/bash
 
-if [ -n "$BASHRC_APPEND" ]; then
-    return 0
-fi
-export BASHRC_APPEND="y"
-
+# All idempotent stuff here.
 HISTSIZE=9000
 HISTFILESIZE=$HISTSIZE
 HISTCONTROL=ignorespace:ignoredups
@@ -30,3 +26,8 @@ function vimux () {
     fi
 }
 
+if [ -n "$BASHRC_APPEND" ]; then
+    return 0
+fi
+export BASHRC_APPEND="y"
+# All non-idempotent stuff here.
