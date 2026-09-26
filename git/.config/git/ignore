@@ -1,0 +1,8 @@
+# Global gitignore (git reads ~/.config/git/ignore automatically)
+.DS_Store
+._*
+*.swp
+*~
+.idea/
+.vscode/
+.env.local

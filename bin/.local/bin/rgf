@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+# rgf — interactive ripgrep + fzf. Type to search live, Enter opens the match in nvim.
+#   rgf              start with an empty query
+#   rgf some regex   start with a query
+set -euo pipefail
+
+RG_PREFIX="rg --column --line-number --no-heading --color=always --smart-case"
+INITIAL_QUERY="${*:-}"
+
+selected="$(
+  FZF_DEFAULT_COMMAND="$RG_PREFIX $(printf %q "$INITIAL_QUERY")" \
+  fzf --ansi --disabled --query "$INITIAL_QUERY" \
+      --bind "change:reload:sleep 0.1; $RG_PREFIX {q} || true" \
+      --bind "ctrl-f:unbind(change)+change-prompt(fzf> )+enable-search" \
+      --prompt 'rg> ' \
+      --delimiter : \
+      --preview 'bat --color=always --style=numbers {1} --highlight-line {2}' \
+      --preview-window 'up,60%,border-bottom,+{2}+3/3,~3' \
+      --header 'Enter: open in nvim · Ctrl-F: switch to fuzzy filtering'
+)" || exit 0
+
+file="$(cut -d: -f1 <<<"$selected")"
+line="$(cut -d: -f2 <<<"$selected")"
+exec nvim "+$line" "$file"

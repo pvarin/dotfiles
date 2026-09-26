@@ -1,0 +1,5 @@
+# ~/.config/mise/config.toml — global runtime defaults.
+# Per-project versions go in that project's mise.toml (`mise use node@22`).
+# Python is managed by uv (`uv python install`, `uv run`, `uv add`).
+[tools]
+node = "lts"

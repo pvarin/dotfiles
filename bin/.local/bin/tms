@@ -1,0 +1,34 @@
+#!/usr/bin/env bash
+# tms — tmux sessionizer. Fuzzy-pick a project and jump to (or create) its tmux session.
+# Candidates: zoxide's frequent dirs + folders two levels deep under $PROJECTS_DIR.
+#   tms            pick interactively
+#   tms ~/code/x   jump straight to a directory
+set -euo pipefail
+
+PROJECTS_DIR="${PROJECTS_DIR:-$HOME/code}"
+
+if [[ $# -ge 1 ]]; then
+  dir="$1"
+else
+  dir="$(
+    {
+      command -v zoxide >/dev/null && zoxide query -l
+      [[ -d "$PROJECTS_DIR" ]] && fd --type d --max-depth 2 --min-depth 1 . "$PROJECTS_DIR"
+    } | sed 's:/$::' | awk '!seen[$0]++' |
+      fzf --prompt 'project> ' --preview 'eza --tree --level=1 --color=always {}'
+  )" || exit 0
+fi
+
+[[ -z "$dir" ]] && exit 0
+dir="$(cd "$dir" && pwd)"
+name="$(basename "$dir" | tr '.:' '__')"
+
+if ! tmux has-session -t="$name" 2>/dev/null; then
+  tmux new-session -d -s "$name" -c "$dir"
+fi
+
+if [[ -n "${TMUX:-}" ]]; then
+  tmux switch-client -t "$name"
+else
+  tmux attach-session -t "$name"
+fi
