@@ -5,7 +5,7 @@
 #
 #   ./install.sh            full setup
 #   ./install.sh --links    only (re)link the config files
-#   ./install.sh --macos    also apply a few macOS defaults (fast key repeat, etc.)
+#   ./install.sh --macos    also apply a few macOS defaults (fast key repeat, window tiling keys, etc.)
 #   ./install.sh --help
 set -euo pipefail
 
@@ -172,7 +172,19 @@ apply_macos_defaults() {
   defaults write com.apple.finder AppleShowAllFiles -bool true   # show dotfiles in Finder
   defaults write com.apple.finder ShowPathbar -bool true
   killall Finder >/dev/null 2>&1 || true
+  apply_window_tiling_shortcuts
   ok "applied (key repeat changes need a log out/in)"
+}
+
+# Window tiling (Window > Move & Resize) on Ctrl+Option instead of Fn+Ctrl.
+# Modifiers: ^ Ctrl, ~ Option, @ Cmd, $ Shift, # Fn/Globe. Apps pick these up on relaunch.
+apply_window_tiling_shortcuts() {
+  defaults write -g NSUserKeyEquivalents -dict-add "Left"   '^~\UF702'
+  defaults write -g NSUserKeyEquivalents -dict-add "Right"  '^~\UF703'
+  defaults write -g NSUserKeyEquivalents -dict-add "Top"    '^~\UF700'
+  defaults write -g NSUserKeyEquivalents -dict-add "Bottom" '^~\UF701'
+  defaults write -g NSUserKeyEquivalents -dict-add "Fill"   '^~f'   # not Return: Ghostty swallows Ctrl+Return
+  ok "window tiling shortcuts: Ctrl+Option+arrows, Ctrl+Option+F to fill"
 }
 
 finish() {
