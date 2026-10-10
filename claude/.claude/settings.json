@@ -34,7 +34,10 @@
       {
         "matcher": "",
         "hooks": [
-          { "type": "command", "command": "~/.claude/hooks/notify.sh" }
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/notify.sh"
+          }
         ]
       }
     ],
@@ -42,7 +45,10 @@
       {
         "matcher": "",
         "hooks": [
-          { "type": "command", "command": "~/.claude/hooks/notify.sh 'Finished'" }
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/notify.sh 'Finished'"
+          }
         ]
       }
     ]
@@ -50,5 +56,6 @@
   "statusLine": {
     "type": "command",
     "command": "~/.claude/statusline.sh"
-  }
+  },
+  "theme": "dark"
 }
