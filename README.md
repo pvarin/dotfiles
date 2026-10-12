@@ -62,6 +62,39 @@ rgf <pattern>           live ripgrep + fzf; Enter opens the hit in nvim
 
 When Claude needs input or finishes, you get a macOS notification and a 🔔 on that tmux window.
 
+## Parallel agents with `wt`
+
+`wt` gives each agent its own [git worktree](https://git-scm.com/docs/git-worktree): a separate
+checkout of the same repo, on its own branch, so several Claudes can edit at once without
+touching each other's files (or yours).
+
+```
+wt fix-login            worktree ~/code/app.worktrees/fix-login + tmux window running Claude
+Ctrl-a W                same, prompting for the branch name
+wt -l                   list this repo's worktrees
+wt -r fix-login         remove the worktree folder (the branch is kept)
+```
+
+Run it from anywhere inside the repo (including another worktree). An existing branch is
+checked out as is; a new one starts from your current commit. Outside tmux it just creates
+the worktree and prints the path.
+
+A typical loop:
+
+1. `wt refactor-api` and `wt fix-login`: hand each Claude its task, keep working in the main checkout.
+2. When one finishes, review its branch: `Ctrl-a g` (lazygit) in its window, or
+   `<leader>gV` in nvim for the branch vs main.
+3. Merge it from the main checkout, then clean up:
+   `wt -r fix-login && git branch -d fix-login`.
+
+Gotchas:
+
+- **Fresh checkout:** untracked files aren't copied. Bring over `.env` and reinstall
+  dependencies (`node_modules`, `.venv`, ...) in each worktree.
+- **One branch, one worktree:** git won't check out the same branch twice, so
+  `wt main` fails while `main` is your main checkout.
+- **`wt -r` refuses if there are uncommitted changes** in the worktree. Commit or discard them first.
+
 ## Cheat sheet
 
 **Shell**
