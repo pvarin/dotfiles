@@ -172,6 +172,9 @@ apply_macos_defaults() {
   defaults write com.apple.finder AppleShowAllFiles -bool true   # show dotfiles in Finder
   defaults write com.apple.finder ShowPathbar -bool true
   killall Finder >/dev/null 2>&1 || true
+  # Never sleep on the charger (display still sleeps) so agents keep running overnight.
+  # Battery behavior is unchanged. Closing the lid still sleeps unless an external display is attached.
+  sudo pmset -c sleep 0
   apply_window_tiling_shortcuts
   ok "applied (key repeat changes need a log out/in)"
 }
