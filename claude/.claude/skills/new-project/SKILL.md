@@ -71,11 +71,7 @@ conventions (attribution trailers and so on).
 ## 4. GitHub (only if the user said yes)
 
 ```bash
-gh repo create <name> --private --source . --remote origin   # or --public
-# git over HTTPS doesn't use the gh login on this Mac by default; wire it up for this repo
-git config --local credential.https://github.com.helper ''
-git config --local --add credential.https://github.com.helper '!gh auth git-credential'
-git push -q -u origin main
+gh repo create <name> --private --source . --remote origin --push   # or --public
 ```
 
 ## 5. tmux session
