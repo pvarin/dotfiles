@@ -39,6 +39,7 @@ Each top-level folder is a stow "package" that mirrors `~`:
 | `tmux`     | `~/.config/tmux/tmux.conf`                 |
 | `starship` | `~/.config/starship.toml`                  |
 | `git`      | `~/.gitconfig`, `~/.config/git/ignore`     |
+| `ssh`      | `~/.ssh/config` (keys stay out of the repo) |
 | `mise`     | `~/.config/mise/config.toml`               |
 | `nvim`     | `~/.config/nvim/` (LazyVim)                |
 | `claude`   | `~/.claude/settings.json`, `CLAUDE.md`, hooks, status line |

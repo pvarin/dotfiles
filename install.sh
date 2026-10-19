@@ -10,7 +10,7 @@
 set -euo pipefail
 
 DOTFILES="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-PACKAGES=(zsh ghostty tmux starship git mise nvim claude bin)
+PACKAGES=(zsh ghostty tmux starship git ssh mise nvim claude bin)
 BACKUP_DIR="$HOME/.dotfiles-backup/$(date +%Y%m%d-%H%M%S)"
 
 LINKS_ONLY=0
@@ -120,6 +120,46 @@ setup_git_identity() {
   ok "wrote ~/.gitconfig.local"
 }
 
+setup_ssh() {
+  step "SSH key for GitHub"
+  local key="$HOME/.ssh/id_ed25519"
+  mkdir -p "$HOME/.ssh" && chmod 700 "$HOME/.ssh"
+
+  if [[ -f "$key" ]]; then
+    ok "key exists ($key)"
+  else
+    local email; email="$(git config user.email || true)"
+    if [[ -t 0 ]]; then
+      echo "  Creating $key. A passphrase is optional; it's stored in the macOS Keychain."
+      ssh-keygen -t ed25519 -C "${email:-$USER@$(hostname -s)}" -f "$key"
+    else
+      ssh-keygen -q -t ed25519 -C "${email:-$USER@$(hostname -s)}" -f "$key" -N ""
+    fi
+    ok "created $key"
+  fi
+  ssh-add --apple-use-keychain "$key" >/dev/null 2>&1 || true
+
+  # Trust GitHub's host keys from its API over HTTPS, instead of whatever answers on port 22.
+  if ! ssh-keygen -F github.com >/dev/null 2>&1; then
+    curl -fsSL https://api.github.com/meta | jq -r '.ssh_keys[] | "github.com " + .' >> "$HOME/.ssh/known_hosts" \
+      && ok "added GitHub host keys to known_hosts" \
+      || warn "couldn't fetch GitHub host keys; the first ssh to github.com will ask"
+  fi
+
+  gh config set git_protocol ssh   # gh clone/create/push use SSH remotes
+
+  if ! gh auth status >/dev/null 2>&1; then
+    warn "not logged in to GitHub yet; 'gh auth login -p ssh' will offer to upload this key"
+    return
+  fi
+  if gh ssh-key list 2>/dev/null | grep -qF "$(awk '{print $2}' "$key.pub")"; then
+    ok "key already on GitHub"
+  else
+    gh ssh-key add "$key.pub" --title "$(hostname -s)" && ok "uploaded key to GitHub" \
+      || warn "upload failed; run: gh auth refresh -s admin:public_key && gh ssh-key add $key.pub"
+  fi
+}
+
 setup_runtimes() {
   step "Runtimes (mise: node LTS)"
   if has mise; then
@@ -197,7 +237,7 @@ finish() {
 
   Next steps:
     1. Quit Terminal and open ${bold}Ghostty${reset} (Applications).
-    2. Run ${bold}gh auth login${reset} to connect GitHub.
+    2. Run ${bold}gh auth login -p ssh${reset} to connect GitHub (uploads your SSH key).
     3. Run ${bold}claude${reset} once to sign in.
     4. Start working: ${bold}tms${reset} to pick a project, ${bold}Ctrl-a C${reset} to open Claude beside you.
 
@@ -217,6 +257,7 @@ install_homebrew
 install_packages
 link_dotfiles
 setup_git_identity
+setup_ssh
 setup_runtimes
 setup_tmux_plugins
 install_claude_code
